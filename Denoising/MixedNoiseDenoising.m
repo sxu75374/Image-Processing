@@ -9,6 +9,9 @@ figure('NumberTitle', 'off', 'Name', 'Fruits_color_noisy.raw');
 zzzz = F_color_noisy(:,:,1);
 imshow(F_color_noisy/255);
 
+width_fruit = 500;
+height_fruit = 400;
+
 %show the noise in three channel by the histogram
 dim_color = 3;
 Noisy_color = zeros(height_fruit,width_fruit,3); 
@@ -48,15 +51,18 @@ plot(Noisy_hist_B);
 title('Distribution histogram of the noise of channel B')
 xlim([0 511]);
 
-%%% SP - Gaussian
-%%% Firstly, remove pepper and salt noise
+filter_uniform_33 = [1/9 1/9 1/9;1/9 1/9 1/9; 1/9 1/9 1/9];
+filter_gaussian_33 = [1/16 1/8 1/16;1/8 1/4 1/8;1/16 1/8 1/16];
+filter_uniform_55 = [1/25 1/25 1/25 1/25 1/25; 1/25 1/25 1/25 1/25 1/25;1/25 1/25 1/25 1/25 1/25;1/25 1/25 1/25 1/25 1/25;1/25 1/25 1/25 1/25 1/25;];
+filter_gaussian_55 = 1/273.*[1 4 7 4 1; 4 16 26 16 4; 7 26 41 26 7;4 16 26 16 4;1 4 7 4 1];
+
+%%%firstly, remove pepper and salt noise
 F_color_denoising_SP = median_pad(F_color_noisy,3);%T=90 better? small:filter harder
 figure('NumberTitle', 'off', 'Name', 'F_color_denoising_median');
 imshow(F_color_denoising_SP/255);
 % W14 = writeraw(F_color_denoising_SP, 'Figure 28: remove impulse noise by Median filter.raw', 500, 400, 3);
 
-%%% Then, remove Gaussian noise
-% denoising color image by 33 uniform
+%then denoising color image by 33 uniform
 F_color_denoising_uniform_33 = zeros(height_fruit,width_fruit,3);
 for i =1:3
     F_color_denoising_uniform_33(:,:,i) = convolute_pad(F_color_denoising_SP(:,:,i), filter_uniform_33);
@@ -64,7 +70,7 @@ end
 figure('NumberTitle', 'off', 'Name', 'F_color_denoising_uniform_33');
 imshow(F_color_denoising_uniform_33/255);
 
-% denoising color image by 33 gaussian
+%denoising color image by 33 gaussian
 F_color_denoising_gaussian_33 = zeros(height_fruit,width_fruit,1);
 for i = 1:3
     F_color_denoising_gaussian_33(:,:,i) = convolute_pad(F_color_denoising_SP(:,:,i), filter_gaussian_33);
@@ -72,7 +78,7 @@ end
 figure('NumberTitle', 'off', 'Name', 'F_color_denoising_gaussian_33');
 imshow(F_color_denoising_gaussian_33/255);
 
-% denoising color image by 33 biliteral
+%%denoising color image by 33 biliteral
 F_color_denoising_biliteral_33 = zeros(height_fruit,width_fruit,1);
 for i = 1:3
     F_color_denoising_biliteral_33(:,:,i) = biliteral_pad(F_color_denoising_SP(:,:,i),100,100,3);
@@ -80,13 +86,13 @@ end
 figure('NumberTitle', 'off', 'Name', 'F_color_denoising_biliteral_33');
 imshow(F_color_denoising_biliteral_33/255);
 
-% denoising color image by 77 biliteral for each channel RGB
+%%denoising color image by 77 biliteral for each channel RGB
 F_color_denoising_biliteral_RGB = zeros(height_fruit,width_fruit,1);
 for i = 1:3
     F_color_denoising_biliteral_RGB(:,:,i) = biliteral_pad(F_color_denoising_SP(:,:,i),8,25,7);
 end
 figure('NumberTitle', 'off', 'Name', 'F_color_denoising_biliteral_77_R');
-imshow(F_color_denoising_biliteral_77_R/255);
+imshow(F_color_denoising_biliteral_RGB/255);
 
 F_color_denoising_mixed_SP = zeros(height_fruit,width_fruit,3);
 for i = 1:3
@@ -95,6 +101,5 @@ end
 figure('NumberTitle', 'off', 'Name', 'F_color_denoising_mixed_SP_B77');
 imshow(F_color_denoising_mixed_SP/255);
 % W15 = writeraw(F_color_denoising_mixed_SP_B, 'Figure 28: Median-7x7 Biliteral.raw', 500, 400, 3);
-
 
 %%% Gaussian - SP
