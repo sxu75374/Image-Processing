@@ -102,4 +102,25 @@ figure('NumberTitle', 'off', 'Name', 'F_color_denoising_mixed_SP_B77');
 imshow(F_color_denoising_mixed_SP/255);
 % W15 = writeraw(F_color_denoising_mixed_SP_B, 'Figure 28: Median-7x7 Biliteral.raw', 500, 400, 3);
 
+
 %%% Gaussian - SP
+%first biliteral
+F_color_denoising_biliteral_77_RGB = zeros(height_fruit,width_fruit,3);
+for i =1:3
+    F_color_denoising_biliteral_77_RGB(:,:,i) = biliteral_pad(F_color_noisy(:,:,i),8,25,7);
+end
+
+F_color_denoising_biliteral_77_nosp = zeros(height_fruit,width_fruit,3);
+for i =1:3
+    F_color_denoising_biliteral_77_nosp(:,:,i) = F_color_denoising_biliteral_77_RGB(:,:,i);
+end
+figure('NumberTitle', 'off', 'Name', 'F_color_denoising_biliteral_77_nosp');
+imshow(F_color_denoising_biliteral_77_nosp/255);
+% W16 = writeraw(F_color_denoising_biliteral_77_nosp, 'Figure 29: 7x7 Biliteral remove addtive first.raw', 500, 400, 3);
+
+% Then median
+F_color_denoising_mixed_B_median = zeros(height_fruit,width_fruit,3);
+F_color_denoising_mixed_B_median = median_pad(F_color_denoising_biliteral_77_nosp,3);
+figure('NumberTitle', 'off', 'Name', 'F_color_denoising_mixed_B77_median');
+imshow(F_color_denoising_mixed_B_median/255);
+% W17 = writeraw(F_color_denoising_mixed_B_median, 'Figure 29: 7x7 Biliteral-Median.raw', 500, 400, 3);
