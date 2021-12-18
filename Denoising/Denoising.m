@@ -1,4 +1,4 @@
-%%% remove the noise by Gaussian & Uniform filter
+%% remove the noise of gray image by Gaussian & Uniform filter
 %load the image
 F = readraw('Fruits_gray.raw',500,400,1);
 figure('NumberTitle', 'off', 'Name', 'Fruits_gray.raw');
@@ -23,13 +23,6 @@ figure('NumberTitle', 'off', 'Name', 'Distribution histogram of the noise');
 plot(Noisy_hist);
 title(' Distribution histogram of the noise')
 xlim([0 511]);
-
-% %padding
-% F_noisy_expand_3 = padding(F_noisy,3);
-% F_noisy_expand_5 = padding(F_noisy,5);
-% F_noisy_expand_7 = padding(F_noisy,7);
-% F_noisy_expand_9 = padding(F_noisy,9);
-% F_noisy_expand_11 = padding(F_noisy,11);
 
 %filter
 filter_uniform_33 = [1/9 1/9 1/9;1/9 1/9 1/9; 1/9 1/9 1/9];
@@ -63,7 +56,8 @@ figure('NumberTitle', 'off', 'Name', 'Denoising image by 5*5 Gaussian filter');
 imshow(F_denoising_gaussian_55/255);
 % W7 = writeraw(F_denoising_gaussian_55, 'Figure 23: Denoising image by 5*5 Gaussian filter.raw', 500, 400, 1);
 
-%%% remove the noise by Biliteral filter
+
+%% remove the noise of gray image by Biliteral filter
 % biliteral 
 F_denoising_biliteral_3 = biliteral_pad(F_noisy,10,10,3);
 figure('NumberTitle', 'off', 'Name', 'Denoising image by biliteral filter3');
@@ -91,3 +85,13 @@ F_denoising_biliteral_11 = biliteral_pad(F_noisy,8,25,11);
 figure('NumberTitle', 'off', 'Name', 'Denoising image by biliteral filter11');
 imshow(F_denoising_biliteral_11/255);
 % W12 = writeraw(F_denoising_biliteral_11, 'Figure 25: Denoising image by 11x11 biliteral filter.raw', 500, 400, 1);
+
+
+
+%% remove the noise of gray image by Non-Local Means filter
+% Non-local Means
+F_noisy = readraw('Fruits_gray_noisy.raw',500,400,1);
+F_denoising_nlm = imnlmfilt(F_noisy, 'DegreeOfSmoothing',10,'SearchWindowSize',21,'ComparisonWindowSize',5);% 10 21 5
+figure('NumberTitle', 'off', 'Name', 'Denoising image by NLM');
+imshow(F_denoising_nlm/255);
+% W13 = writeraw(F_denoising_nlm, 'Figure 26: Denoising image by NLM.raw', 500, 400, 1);
