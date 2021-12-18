@@ -1,6 +1,5 @@
-
+% Method A Transfer function histogram manipulation
 Toy = readraw('Toy.raw', 400, 560, 1);
-
 figure('NumberTitle', 'off', 'Name', 'Toy.raw');
 imshow(Toy/255);
 
@@ -75,8 +74,13 @@ title('Histogram of New Frequency of Pixels after applying Transfer Function')
 xlabel('Intensity Value');
 ylabel('Number of Pixels');
 
-
-%%% Method B
+%%
+%%% Method B Filling bucket histogram manipulation
+Toy = readraw('Toy.raw', 400, 560, 1);
+figure('NumberTitle', 'off', 'Name', 'Toy.raw');
+imshow(Toy/255);
+width_toy = 400;
+height_toy = 560;
 Size_toy = height_toy*width_toy;
 Bucket = Size_toy/256;% =875
 
@@ -88,7 +92,7 @@ for i = 0:255
     z(:,3) = i;
     Toy_index_B = [Toy_index_B;z];
 end
-
+% fill the bucket
 new_mid = [];
 Toy_new_value_B = [];
 for i = 0:255
