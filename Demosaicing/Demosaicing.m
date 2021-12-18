@@ -1,6 +1,3 @@
-clear;
-clc;
-%%%%%%%%%%%%%%% demosaicing %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 G = readraw('House.raw',580,440,1);
 figure('NumberTitle', 'off', 'Name', 'House.raw');
 imshow(G/255);
