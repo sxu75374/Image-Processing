@@ -29,3 +29,22 @@ W12 = writeraw(flower_s, 'Figure 12: flower_s.raw',247,247,1);
 figure();
 imshow(jar_s)
 W15 = writeraw(jar_s, 'Figure 15: jar_s.raw',252,252,1);
+
+
+% Maze
+maze = imread('maze.png');
+% readraw('maze.raw',343,343,1);
+% figure()
+% imshow(maze)
+maze_normal = normalize_maze(maze(:,:,1));
+[loop_of_shrinking_maze,maze_s] = shrink(maze_normal);
+figure();
+imshow(maze_s)
+
+[CDFxm,loop_of_shrink_maze_t10,maze_s_t10] = shrink_test(maze_normal,5);
+figure();
+imshow(maze_s_t10)
+
+[CDFxxm,loop_of_shrink_maze_t50,maze_s_t50] = shrink_test(maze_normal,50);
+figure();
+imshow(maze_s_t50)
