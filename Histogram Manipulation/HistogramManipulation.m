@@ -59,7 +59,7 @@ for i = 1:height_toy
 end
 figure('NumberTitle', 'off', 'Name', 'Transfer function enhanced image');
 imshow(Toy_enhanced_A/255);
-W2 = writeraw(Toy_enhanced_A, 'Figure 12: Transfer function enhanced image.raw', 400, 560, 1);
+% W2 = writeraw(Toy_enhanced_A, 'Figure 12: Transfer function enhanced image.raw', 400, 560, 1);
 
 %draw histogram after Method A manipulation
 Toy_hist_after_A = zeros(1,256);
@@ -111,7 +111,7 @@ end
 
 figure('NumberTitle', 'off', 'Name', 'filling bucket enhanced image');
 imshow(Toy_enhanced_B/255);
-W3 = writeraw(Toy_enhanced_B, 'Figure 16: filling bucket enhanced image.raw', 400, 560, 1);
+% W3 = writeraw(Toy_enhanced_B, 'Figure 16: filling bucket enhanced image.raw', 400, 560, 1);
 
 %Histogram of Method B after enhanced
 Toy_hist_after_B = zeros(1,256);
