@@ -56,6 +56,8 @@ filter_gaussian_33 = [1/16 1/8 1/16;1/8 1/4 1/8;1/16 1/8 1/16];
 filter_uniform_55 = [1/25 1/25 1/25 1/25 1/25; 1/25 1/25 1/25 1/25 1/25;1/25 1/25 1/25 1/25 1/25;1/25 1/25 1/25 1/25 1/25;1/25 1/25 1/25 1/25 1/25;];
 filter_gaussian_55 = 1/273.*[1 4 7 4 1; 4 16 26 16 4; 7 26 41 26 7;4 16 26 16 4;1 4 7 4 1];
 
+
+%%%%%%% original cascade sequence: SP-Gaussian %%%%%%%
 %%%firstly, remove pepper and salt noise
 F_color_denoising_SP = median_pad(F_color_noisy,3);%T=90 better? small:filter harder
 figure('NumberTitle', 'off', 'Name', 'F_color_denoising_median');
@@ -103,7 +105,7 @@ imshow(F_color_denoising_mixed_SP/255);
 % W15 = writeraw(F_color_denoising_mixed_SP_B, 'Figure 28: Median-7x7 Biliteral.raw', 500, 400, 3);
 
 
-%%% Gaussian - SP
+%%%%%%% inverse cascade sequence: Gaussian-SP %%%%%%%
 %first biliteral
 F_color_denoising_biliteral_77_RGB = zeros(height_fruit,width_fruit,3);
 for i =1:3
@@ -124,3 +126,31 @@ F_color_denoising_mixed_B_median = median_pad(F_color_denoising_biliteral_77_nos
 figure('NumberTitle', 'off', 'Name', 'F_color_denoising_mixed_B77_median');
 imshow(F_color_denoising_mixed_B_median/255);
 % W17 = writeraw(F_color_denoising_mixed_B_median, 'Figure 29: 7x7 Biliteral-Median.raw', 500, 400, 3);
+
+
+%%%%%%% original cascade sequence: SP-NLM %%%%%%%
+F_color_denoising_mixed_SP_nlm = zeros(height_fruit,width_fruit,3);
+F_denoising_nlm_RGB = zeros(height_fruit,width_fruit,1);
+for i =1:3
+    F_color_denoising_mixed_SP_nlm(:,:,i) = imnlmfilt(F_color_denoising_SP(:,:,i), 'DegreeOfSmoothing',10,'SearchWindowSize',25,'ComparisonWindowSize',7);
+end
+figure('NumberTitle', 'off', 'Name', 'F_color_denoising_SP_nlm');
+imshow(F_color_denoising_mixed_SP_nlm/255);
+% W18 = writeraw(F_color_denoising_mixed_SP_nlm, 'Figure 30: Best result, Median-NLM.raw', 500, 400, 3);
+
+
+%%%%%%% inverse cascade sequence: NLM-sp %%%%%%%
+F_color_denoising_mixed_nlm_nosp = zeros(height_fruit,width_fruit,3);
+F_denoising_nlm_RGB_nosp = zeros(height_fruit,width_fruit,3);
+for i =1:3
+    F_color_denoising_mixed_nlm_nosp(:,:,i) = imnlmfilt(F_color_noisy(:,:,i), 'DegreeOfSmoothing',10,'SearchWindowSize',25,'ComparisonWindowSize',7);
+end
+figure('NumberTitle', 'off', 'Name', 'F_color_denoising_nlm_nosp');
+imshow(F_color_denoising_mixed_nlm_nosp/255);
+% W19 = writeraw(F_color_denoising_mixed_nlm_nosp, 'Figure 31: NLM remove addtive first.raw', 500, 400, 3);
+
+%%% then remove impulse
+F_color_denoising_mixed_nlm_sp = median_pad(F_color_denoising_mixed_nlm_nosp,3);
+figure('NumberTitle', 'off', 'Name', 'F_color_denoising_mixed_nlm_sp');
+imshow(F_color_denoising_mixed_nlm_sp/255);
+% W20 = writeraw(F_color_denoising_mixed_nlm_sp, 'Figure 31: NLM-Median.raw', 500, 400, 3);
