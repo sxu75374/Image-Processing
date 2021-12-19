@@ -69,12 +69,10 @@ figure('NumberTitle', 'off', 'Name', 'Denoising image by 3x3 biliteral filter');
 imshow(F_denoising_biliteral_5/255);
 % W9 = writeraw(F_denoising_biliteral_5, 'Figure 25: Denoising image by 5x5 biliteral filter.raw', 500, 400, 1);
 
-
 F_denoising_biliteral_7 = biliteral_pad(F_noisy,8,25,7);
 figure('NumberTitle', 'off', 'Name', 'Denoising image by biliteral filter7');
 imshow(F_denoising_biliteral_7/255);
 % W10 = writeraw(F_denoising_biliteral_7, 'Figure 25: Denoising image by 7x7 biliteral filter.raw', 500, 400, 1);
-
 
 F_denoising_biliteral_9 = biliteral_pad(F_noisy,8,25,9);
 figure('NumberTitle', 'off', 'Name', 'Denoising image by biliteral filter9');
@@ -87,7 +85,6 @@ imshow(F_denoising_biliteral_11/255);
 % W12 = writeraw(F_denoising_biliteral_11, 'Figure 25: Denoising image by 11x11 biliteral filter.raw', 500, 400, 1);
 
 
-
 %% remove the noise of gray image by Non-Local Means filter
 % Non-local Means
 F_noisy = readraw('Fruits_gray_noisy.raw',500,400,1);
@@ -95,3 +92,11 @@ F_denoising_nlm = imnlmfilt(F_noisy, 'DegreeOfSmoothing',10,'SearchWindowSize',2
 figure('NumberTitle', 'off', 'Name', 'Denoising image by NLM');
 imshow(F_denoising_nlm/255);
 % W13 = writeraw(F_denoising_nlm, 'Figure 26: Denoising image by NLM.raw', 500, 400, 1);
+
+P_u_33 = PSNR(F_denoising_uniform_33,F);
+P_g_33 = PSNR(F_denoising_gaussian_33,F);
+P_u_55 = PSNR(F_denoising_uniform_55,F);
+P_g_55 = PSNR(F_denoising_gaussian_55,F);
+P_b_8255 = PSNR(F_denoising_biliteral_5,F);
+P_b_8257 = PSNR(F_denoising_biliteral_7,F);
+P_nlm_10215 = PSNR(F_denoising_nlm,F);
