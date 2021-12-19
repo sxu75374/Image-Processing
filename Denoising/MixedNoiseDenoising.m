@@ -154,3 +154,22 @@ F_color_denoising_mixed_nlm_sp = median_pad(F_color_denoising_mixed_nlm_nosp,3);
 figure('NumberTitle', 'off', 'Name', 'F_color_denoising_mixed_nlm_sp');
 imshow(F_color_denoising_mixed_nlm_sp/255);
 % W20 = writeraw(F_color_denoising_mixed_nlm_sp, 'Figure 31: NLM-Median.raw', 500, 400, 3);
+
+
+%%% Calculate PSNR
+P_M_N_R = PSNR(F_color_denoising_mixed_SP_nlm(:,:,1),F_color(:,:,1));
+P_M_N_G = PSNR(F_color_denoising_mixed_SP_nlm(:,:,2),F_color(:,:,2));
+P_M_N_B = PSNR(F_color_denoising_mixed_SP_nlm(:,:,3),F_color(:,:,3));
+
+P_M_B_R = PSNR(F_color_denoising_mixed_SP_B(:,:,1),F_color(:,:,1));
+P_M_B_G = PSNR(F_color_denoising_mixed_SP_B(:,:,2),F_color(:,:,2));
+P_M_B_B = PSNR(F_color_denoising_mixed_SP_B(:,:,3),F_color(:,:,3));
+
+
+P_B_M_R = PSNR(F_color_denoising_mixed_B_median(:,:,1),F_color(:,:,1));
+P_B_M_G = PSNR(F_color_denoising_mixed_B_median(:,:,2),F_color(:,:,2));
+P_B_M_B = PSNR(F_color_denoising_mixed_B_median(:,:,3),F_color(:,:,3));
+
+P_N_M_R = PSNR(F_color_denoising_mixed_nlm_sp(:,:,1),F_color(:,:,1));
+P_N_M_G = PSNR(F_color_denoising_mixed_nlm_sp(:,:,2),F_color(:,:,2));
+P_N_M_B = PSNR(F_color_denoising_mixed_nlm_sp(:,:,3),F_color(:,:,3));
