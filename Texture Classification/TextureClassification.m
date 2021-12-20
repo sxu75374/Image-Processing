@@ -1,3 +1,4 @@
+% Texture classification based on energy features by Nearest Neighbors based on Mahalanobis distance
 % filterbank
 kernel = [1 4 6 4 1; -1 -2 0 2 1; -1 0 2 0 -1; -1 2 0 -2 1; 1 -4 6 -4 1];
 
@@ -114,6 +115,7 @@ for i = 1:25
     inter_class(4,i) = 9*(average_within_class(4,i)-overall_average(1,i))^2;
 end
 inter_class_final = inter_class(1,:)+inter_class(2,:)+inter_class(3,:)+inter_class(4,:);
+
 %% discriminant power
 discriminant_power = zeros(4,25);
 discriminant_power(1,:) = intra_class(1,:)./inter_class(1,:);
@@ -121,10 +123,12 @@ discriminant_power(2,:) = intra_class(2,:)./inter_class(2,:);
 discriminant_power(3,:) = intra_class(3,:)./inter_class(3,:);
 discriminant_power(4,:) = intra_class(4,:)./inter_class(4,:);
 discriminant_power_final = intra_class_final./inter_class_final;
+
 %% pca
 pca_result = pca(all_feature_vector,'NumComponents',3);
 % mean(all_feature_vector)
 pca_train = (all_feature_vector-mean(all_feature_vector))*pca_result;
+
 %% scatter image of different classes 
 % figure()
 % scatter3(pca_test(:,1),pca_test(:,2),pca_test(:,3),'k');
@@ -170,12 +174,15 @@ for i = 1:5
         count = count+1;
     end
 end
+
 %test_all_feature_vector = test_all_feature_vector./test_all_feature_vector(:,1);
+
 %% test pca
 % pca_result_test = pca(test_all_feature_vector,'NumComponents',3);
 pca_test = (test_all_feature_vector-mean(all_feature_vector))*pca_result;
 figure()
 scatter3(pca_test(:,1),pca_test(:,2),pca_test(:,3),'r');
+
 %% classification by Mahalanobis distance
 x_u1 = zeros(12,3);
 for i = 1:12
@@ -211,7 +218,6 @@ x_u4_t = zeros(12,3);
 for i = 1:36
     x_u4_t(i,:) = pca_train(i,:) - mean(pca_train(28:36,:));
 end
-
 
 %% covariance
 %class 1
@@ -266,9 +272,7 @@ correct_test_label = [2;0;0;1;3;2;1;3;3;1;0;2];
 error_rate_NearDist = errorRate(correct_test_label,predict_NearestDist);
 
 
-
-
-% % train er
+% % train error
 % 
 % Dm_t = zeros(36,4);
 % for i = 1:36
@@ -307,10 +311,8 @@ predict_RF = str2num(cell2mat(predict_RF));
 error_rate_RF = errorRate(correct_test_label,predict_RF);
 
 
-
 %% Classifier -- Supervised -- SVM
 % train
-
 train_label_svm = zeros(36,4);
 train_label_svm(1:9,1) = 1;
 train_label_svm(10:18,2) = 1;
