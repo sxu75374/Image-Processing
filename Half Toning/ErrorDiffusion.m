@@ -1,3 +1,6 @@
+% load data
+Bridge = readraw('bridge.raw',332,501,1);
+
 % Floyd
 Bridge_ed_Floyd = error_diffusion(Bridge,'Floyd',127);
 figure();
